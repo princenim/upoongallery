@@ -14,7 +14,7 @@ class CartView(View):
     @login_required
     def get(self, request):
         user = request.user
-        cart = Cart.objects.filter(user=user).select_related('art', 'art__artist', 'art__size')
+        cart = Cart.objects.filter(user=user).select_related('art', 'art__artist', 'art__size') #쿼리 최소화
 
         results = [
             {
@@ -27,7 +27,7 @@ class CartView(View):
             for item in cart
         ]
 
-        total_price = int(cart.aggregate(sum=Sum('art__price'))['sum'])
+        total_price = int(cart.aggregate(sum=Sum('art__price'))['sum']) 
         count       = cart.count()
 
         return JsonResponse({
